@@ -1,17 +1,25 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import "./Navbar.css"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faFilePen, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faFilePen,
+  faArrowRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = ({ isAuth }) => {
+type NavbarProps = {
+  isAuth: boolean;
+};
+
+const Navbar: React.FC<NavbarProps> = ({ isAuth }) => {
   return (
     <nav>
       <Link to="/">
         <FontAwesomeIcon icon={faHouse} />
         ホーム
       </Link>
-      {isAuth ?
+      {isAuth ? (
         <>
           <Link to="/createpost">
             <FontAwesomeIcon icon={faFilePen} />
@@ -22,14 +30,14 @@ const Navbar = ({ isAuth }) => {
             ログアウト
           </Link>
         </>
-        :
-        (<Link to="/login">
+      ) : (
+        <Link to="/login">
           <FontAwesomeIcon icon={faArrowRightToBracket} />
           ログイン
-        </Link>)
-      }
+        </Link>
+      )}
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

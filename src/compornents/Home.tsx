@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import "./Home.css"
-import { auth, db } from '../firebase';
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./Home.css";
+import { auth, db } from "../firebase";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { User } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+type Post = {
+  id: string;
+  title?: string;
+  postsText?: string;
+  author?: {
+    username: string;
+    id: string;
+  };
+};
 
-  const [postList, setPostList] = useState([]);
+const Home: React.FC = () => {
+  const [postList, setPostList] = useState<Post[]>([]);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -15,38 +25,37 @@ const Home = () => {
       // console.log(data.docs.map((doc) => ({ doc })));
       // console.log(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    }
+    };
     getPosts();
   }, []);
 
   const navigate = useNavigate();
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     await deleteDoc(doc(db, "posts", id));
-    // window.location.href = "/";
     navigate("/");
-  }
+  };
 
   return (
-    <div className='homePage'>
+    <div className="homePage">
       {postList.map((post) => {
         return (
           <div className="postContents" key={post.id}>
             <h1>{post.title}</h1>
-            <div className="postTextContainer">
-              {post.postsText}
-            </div>
-            <div className="nameAndDeleteButton">
-              <h3>@{post.author.username}</h3>
-              {post.author.id === auth.currentUser?.id && (
-                <button onClick={() => handleDelete(post.id)}>削除</button>
-              )}
-            </div>
+            <div className="postTextContainer">{post.postsText}</div>
+            {post.author && (
+              <div className="nameAndDeleteButton">
+                <h3>@{post.author.username}</h3>
+                {post.author.id === auth.currentUser?.id && (
+                  <button onClick={() => handleDelete(post.id)}>削除</button>
+                )}
+              </div>
+            )}
           </div>
         );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
