@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./Home.css";
 import { auth, db } from "../firebase";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 type Post = {
@@ -46,7 +45,7 @@ const Home: React.FC = () => {
             {post.author && (
               <div className="nameAndDeleteButton">
                 <h3>@{post.author.username}</h3>
-                {post.author.id === auth.currentUser?.id && (
+                {post.author.id === auth.currentUser?.uid && (
                   <button onClick={() => handleDelete(post.id)}>削除</button>
                 )}
               </div>

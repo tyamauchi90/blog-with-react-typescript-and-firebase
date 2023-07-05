@@ -8,7 +8,9 @@ import { useState } from "react";
 import CreatePost from "./compornents/Createpost";
 
 function App() {
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+  // const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
+  const initialIsAuth = localStorage.getItem("isAuth") === "true";
+  const [isAuth, setIsAuth] = useState<boolean>(initialIsAuth);
 
   return (
     <BrowserRouter>
